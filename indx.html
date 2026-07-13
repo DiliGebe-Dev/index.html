@@ -1,0 +1,1267 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JO FIRE | Creative Visuals & Graphic Design Portfolio</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        dark: '#050505',
+                        darker: '#020202',
+                        card: '#0f0f0f',
+                        accent: '#e63946', // Fire-red signature accent
+                        accentHover: '#ff4d5a',
+                        cyan: '#f1faee',
+                    },
+                    animation: {
+                        'blob': 'blob 7s infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    },
+                    keyframes: {
+                        blob: {
+                            '0%': { transform: 'translate(0px, 0px) scale(1)' },
+                            '33%': { transform: 'translate(30px, -50px) scale(1.15)' },
+                            '66%': { transform: 'translate(-20px, 20px) scale(0.85)' },
+                            '100%': { transform: 'translate(0px, 0px) scale(1)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+
+        /* 3D Canvas Background container */
+        #canvas-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: -1;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #0d0d0d 0%, #020202 100%);
+        }
+
+        /* Scroll Reveal animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Premium Glassmorphism Cards */
+        .glass {
+            background: rgba(5, 5, 5, 0.8);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+
+        .glass-card {
+            background: linear-gradient(145deg, #0e0e0e, #040404);
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease, border-color 0.4s ease;
+        }
+
+        .glass-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 20px 40px -15px rgba(230, 57, 70, 0.3);
+            border-color: rgba(230, 57, 70, 0.4);
+        }
+
+        /* Premium Gradient typography helper */
+        .text-gradient {
+            background: linear-gradient(to right, #e63946, #ff7b00, #ffb3b3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Scrollbar aesthetics */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #020202;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #181818;
+            border-radius: 10px;
+            border: 2px solid #020202;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #e63946;
+        }
+        
+        .portfolio-img-container {
+            overflow: hidden;
+            position: relative;
+            background: #0c0c0c;
+        }
+        
+        .portfolio-img {
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            width: 100%;
+            height: 100%;
+        }
+        
+        .portfolio-card:hover .portfolio-img {
+            transform: scale(1.08);
+        }
+
+        /* Active filter styles */
+        .filter-btn.active {
+            background-color: #e63946;
+            color: #ffffff;
+            box-shadow: 0 0 15px rgba(230, 57, 70, 0.4);
+            border-color: #e63946;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-accent selection:text-white">
+
+    <nav class="fixed w-full z-50 transition-all duration-300" id="navbar">
+        <div class="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center glass rounded-b-2xl md:rounded-full md:mt-4 md:px-6 border-t-0 md:border-t">
+            <a href="#" class="font-display font-bold text-xl tracking-wider text-white flex items-center gap-3">
+                <img src="images/5974231240687078374_99.jpg" 
+                     alt="JO FIRE Profile Logo" 
+                     class="w-10 h-10 rounded-full object-cover border-2 border-accent/60 shadow-[0_0_15px_rgba(230,57,70,0.4)]"
+                     onerror="this.onerror=null; loadFallbackSvg(this, 'avatar', 'JO', 'FIRE');">
+                <span>JO<span class="text-accent font-light">FIRE</span></span>
+            </a>
+            
+            <!-- Desktop Menu Options -->
+            <div class="hidden md:flex gap-8 items-center text-xs font-semibold tracking-widest">
+                <a href="#work" class="hover:text-accent transition-colors duration-200 uppercase">My Work</a>
+                <a href="#about" class="hover:text-accent transition-colors duration-200 uppercase">About Me</a>
+                <a href="#contact" class="px-5 py-2 bg-white text-dark rounded-full hover:bg-accent hover:text-white transition-all duration-300 font-bold uppercase">Get In Touch</a>
+            </div>
+
+            <!-- Mobile Toggle Menu Button -->
+            <button class="md:hidden text-white text-2xl p-1 focus:outline-none" id="mobile-menu-btn" aria-label="Toggle Menu">
+                <i class="fa-solid fa-bars"></i>
+            </button>
+        </div>
+
+        <!-- Mobile Menu Flyout Overlay -->
+        <div id="mobile-menu" class="hidden absolute top-full left-0 w-full glass flex-col items-center py-6 gap-5 border-t border-white/5 md:hidden">
+            <a href="#work" class="text-base font-display hover:text-accent mobile-link">PORTFOLIO</a>
+            <a href="#about" class="text-base font-display hover:text-accent mobile-link">ABOUT</a>
+            <a href="#contact" class="text-base font-display text-accent mobile-link">CONTACT</a>
+        </div>
+    </nav>
+
+    <section id="home" class="relative h-screen flex items-center justify-center pt-20">
+        <!-- 3D Canvas dynamic node background -->
+        <div id="canvas-container"></div>
+
+        <div class="relative z-10 text-center px-4 max-w-5xl mx-auto flex flex-col items-center mt-8 md:mt-0">
+            <div class="relative mb-6 reveal flex justify-center">
+                <div class="w-24 h-24 md:w-28 md:h-28 rounded-full p-1 bg-gradient-to-tr from-accent via-orange-500 to-red-600 animate-pulse-slow shadow-[0_0_20px_rgba(230,57,70,0.5)]">
+                    <div class="w-full h-full rounded-full overflow-hidden border-2 border-dark bg-card">
+                        <img src="images/5974231240687078374_99.jpg" 
+                             alt="JO FIRE Hero Profile" 
+                             class="w-full h-full object-cover"
+                             onerror="this.onerror=null; loadFallbackSvg(this, 'avatar', 'JO', 'FIRE');">
+                    </div>
+                </div>
+                <!-- Live Active Online Pulse -->
+                <span class="absolute bottom-1 right-2 w-4 h-4 bg-emerald-500 border-2 border-dark rounded-full shadow-[0_0_10px_rgba(16,185,129,0.6)]"></span>
+            </div>
+
+            <div class="inline-flex items-center gap-2 mb-4 px-4 py-1.5 rounded-full border border-white/10 bg-white/5 backdrop-blur-md text-xs font-medium tracking-widest uppercase text-gray-300 reveal">
+                <span class="w-1.5 h-1.5 bg-accent rounded-full animate-ping"></span>
+                Graphic Designer | Creative Visual Artist
+            </div>
+            
+            <h1 class="font-display text-5xl md:text-8xl lg:text-9xl font-bold tracking-tight leading-none mb-6 reveal" style="transition-delay: 100ms;">
+                THINK <span class="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">DESIGN.</span><br>
+                THINK <span class="text-gradient">JOFIRE.</span>
+            </h1>
+            
+            <p class="text-gray-400 text-base md:text-lg max-w-2xl mx-auto mb-10 font-light leading-relaxed reveal" style="transition-delay: 200ms;">
+                Expert brand designs, modern social media campaigns, and high-conversion assets engineered to command attention.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 reveal w-full sm:w-auto" style="transition-delay: 300ms;">
+                <a href="#work" class="px-8 py-3.5 bg-accent text-white rounded-full font-semibold hover:bg-accentHover transition-colors text-center shadow-[0_0_25px_rgba(230,57,70,0.35)]">
+                    Explore My Portfolio <i class="fa-solid fa-arrow-down ml-2"></i>
+                </a>
+                <a href="#contact" class="px-8 py-3.5 glass text-white rounded-full font-semibold hover:bg-white/10 transition-colors text-center border border-white/15">
+                    Start a Project
+                </a>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce z-10">
+            <i class="fa-solid fa-chevron-down text-gray-500 text-xl"></i>
+        </div>
+    </section>
+
+    <section id="about" class="py-24 bg-darker relative border-y border-white/5">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                
+                <div class="order-2 lg:order-1 reveal">
+                    <span class="text-accent text-xs font-bold tracking-widest uppercase mb-2 block">THE CREATIVE MIND</span>
+                    <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Bridging <span class="text-gradient">Logic</span> and <span class="text-gradient">Creativity</span>.</h2>
+                    <p class="text-gray-400 text-base mb-6 leading-relaxed">
+                        I am a passionate graphic designer specializing in high-impact creative visuals, digital identity systems, and production-ready digital assets. My design focus centers on extreme clarity, aesthetic balance, and direct client conversions.
+                    </p>
+                    <p class="text-gray-400 text-base mb-8 leading-relaxed">
+                        Currently studying Computer Science at Debre Berhan University, my academic roadmap directly inspires my technical efficiency, spatial mathematics, and modern developer workflow. This powerful combination allows me to approach digital media with both creative precision and technological rigor.
+                    </p>
+                    
+                    <div>
+                        <h3 class="text-xs uppercase tracking-widest text-gray-500 mb-4 font-bold">Tech Stack & Skillset</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3.5 py-1.5 glass-card rounded-md text-xs font-medium flex items-center gap-2"><i class="fa-brands fa-adobe text-accent"></i> Photoshop</span>
+                            <span class="px-3.5 py-1.5 glass-card rounded-md text-xs font-medium flex items-center gap-2"><i class="fa-brands fa-adobe text-orange-500"></i> Illustrator</span>
+                            <span class="px-3.5 py-1.5 glass-card rounded-md text-xs font-medium flex items-center gap-2"><i class="fa-solid fa-cube text-red-400"></i> 3D Renderings</span>
+                            <span class="px-3.5 py-1.5 glass-card rounded-md text-xs font-medium flex items-center gap-2"><i class="fa-solid fa-bezier-curve text-blue-400"></i> Identity Design</span>
+                            <span class="px-3.5 py-1.5 glass-card rounded-md text-xs font-medium flex items-center gap-2"><i class="fa-brands fa-youtube text-red-600"></i> YouTube Assets</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-1 lg:order-2 reveal relative flex justify-center">
+                    <div class="relative w-full max-w-sm rounded-2xl glass-card p-3 overflow-hidden group">
+                        <div class="absolute -top-24 -right-24 w-60 h-60 bg-accent/20 rounded-full mix-blend-screen filter blur-3xl animate-blob"></div>
+                        
+                        <div class="relative z-10 h-full w-full bg-[#080808] rounded-xl border border-white/5 p-6 text-center">
+                            <div class="portfolio-img-container rounded-lg overflow-hidden border border-white/10 mb-4 bg-zinc-900 shadow-xl aspect-[4/5]">
+                                <img src="images/5974231240687078374_99.jpg" 
+                                     alt="Jo Fire Photo (Grade 12)" 
+                                     class="w-full h-full object-cover filter contrast-125 hover:scale-105 transition-transform duration-700"
+                                     onerror="this.onerror=null; loadFallbackSvg(this, 'portrait', 'JO FIRE', 'Grade 12 Foundation');">
+                            </div>
+                            <h3 class="font-display text-2xl font-bold mb-1">GRADE 12<sup>TH</sup></h3>
+                            <p class="text-accent tracking-widest text-[11px] uppercase font-bold">Educational Foundation</p>
+                            <p class="text-xs text-gray-500 mt-2 italic">"Successfully completed secondary education up to Grade 12 and continuing the academic journey in higher education."</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section id="work" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            
+            <!-- Page Header Container -->
+            <div class="w-full glass-card rounded-2xl p-8 md:p-12 mb-12 relative overflow-hidden border-l-4 border-accent bg-gradient-to-br from-[#1a0505] via-[#0a0a0a] to-[#050505] reveal">
+                <div class="absolute -right-24 -bottom-24 w-72 h-72 bg-accent/10 rounded-full blur-3xl"></div>
+                <div class="relative z-10 flex flex-col justify-between min-h-[220px]">
+                    <div>
+                        <span class="text-xs uppercase tracking-widest text-accent font-bold mb-2 block">PORTFOLIO SEGMENT</span>
+                        <h2 class="font-display text-5xl md:text-7xl font-bold tracking-tighter text-white mb-4">CREATIVE GALLERY</h2>
+                        <p class="text-gray-300 text-base md:text-lg max-w-3xl font-light tracking-wide uppercase leading-relaxed">
+                            An exceptional collection of logo designs, professional posters, branding campaigns, and custom high-click YouTube assets.
+                        </p>
+                    </div>
+                    <div class="mt-8 pt-6 border-t border-white/5 flex flex-wrap justify-between items-center gap-4 text-xs font-mono tracking-wider text-gray-400">
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-fire text-accent"></i> JO FIRE DESIGNS</span>
+                        <span class="flex items-center gap-2"><i class="fa-solid fa-phone text-accent"></i> +251 977 318 502</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visual Category Filter Bar -->
+            <div class="flex flex-wrap gap-3 justify-center mb-16 reveal" style="transition-delay: 100ms;">
+                <button class="filter-btn active px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest border border-white/10 transition-all duration-300" onclick="filterGallery('all', this)">All Projects</button>
+                <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest border border-white/10 transition-all duration-300" onclick="filterGallery('logos', this)">Logo Folio</button>
+                <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest border border-white/10 transition-all duration-300" onclick="filterGallery('posters', this)">Posters & Campaigns</button>
+                <button class="filter-btn px-6 py-2.5 rounded-full text-xs font-bold uppercase tracking-widest border border-white/10 transition-all duration-300" onclick="filterGallery('thumbnails', this)">YouTube Assets</button>
+            </div>
+
+            <!-- LOGO FOLIO SECTION -->
+            <div class="gallery-section mb-20 reveal" data-category="logos">
+                <div class="flex items-center gap-4 mb-8">
+                    <h3 class="font-display text-2xl font-semibold text-gray-200">The Logo Folio Collection</h3>
+                    <div class="h-px bg-white/10 flex-grow"></div>
+                    <span class="text-xs text-accent font-mono">01 / LOGOS</span>
+                </div>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 gap-6">
+                    <!-- GP Logo -->
+                    <div class="portfolio-card glass-card rounded-xl p-6 flex flex-col items-center justify-center aspect-square text-center group cursor-pointer relative overflow-hidden" onclick="openLightbox('Gospel Picture (GP) Logo', 'images/Screenshot 2026-07-08 163306.png', 'logos', 'A modern graphic symbol designed to showcase minimalist and powerful spiritual identity styling.')">
+                        <div class="w-full h-full flex items-center justify-center relative">
+                            <img src="images/Screenshot 2026-07-08 163306.png"> 
+                        </div>
+                        <div class="absolute bottom-3 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-between items-center">
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Gospel Picture Logo</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-accent text-xs"></i>
+                        </div>
+                    </div>
+                    
+                    <!-- Metsni Coffee Shop Logo -->
+                    <div class="portfolio-card glass-card rounded-xl p-6 flex flex-col items-center justify-center aspect-square text-center group cursor-pointer relative overflow-hidden" onclick="openLightbox('Metsni Coffee Shop Logo', 'images/Screenshot 2026-07-08 163249.png', 'logos', 'Artistic brand mark designed for Metsni coffee shop, combining traditional essence with modern hospitality graphics.')">
+                        <div class="w-full h-full flex items-center justify-center relative">
+                            <img src="images/Screenshot 2026-07-08 163249.png" 
+                                 alt="Metsni Coffee Shop Logo" 
+                                 class="max-w-[85%] max-h-[85%] object-contain portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'logo', 'Metsni', 'Coffee Shop Logo');">
+                        </div>
+                        <div class="absolute bottom-3 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-between items-center">
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Metsni Coffee Logo</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-accent text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Abyssinia Styles Logo -->
+                    <div class="portfolio-card glass-card rounded-xl p-6 flex flex-col items-center justify-center aspect-square text-center group cursor-pointer relative overflow-hidden" onclick="openLightbox('Abyssinia Styles Logo', 'images/Screenshot 2026-07-08 163152.png', 'logos', 'A sleek logo representing identity, culture, and upscale fashion in one unique visual frame.')">
+                        <div class="w-full h-full flex items-center justify-center relative">
+                            <img src="images/Screenshot 2026-07-08 163152.png" 
+                                 alt="Abyssinia Styles Logo" 
+                                 class="max-w-[85%] max-h-[85%] object-contain portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'logo', 'AS', 'Abyssinia Styles');">
+                        </div>
+                        <div class="absolute bottom-3 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-between items-center">
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Abyssinia Styles</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-accent text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Sosi Fashion Store Logo -->
+                    <div class="portfolio-card glass-card rounded-xl p-6 flex flex-col items-center justify-center aspect-square text-center group cursor-pointer relative overflow-hidden" onclick="openLightbox('Sosi Fashion Store Logo', 'images/Screenshot 2026-07-08 163200.png', 'logos', 'Elegant fashion logotype focusing on feminine design elements, luxury textures, and outstanding visibility.')">
+                        <div class="w-full h-full flex items-center justify-center relative">
+                            <img src="images/Screenshot 2026-07-08 163200.png" 
+                                 alt="Sosi Fashion Store Logo" 
+                                 class="max-w-[85%] max-h-[85%] object-contain portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'logo', 'Sosi', 'Fashion Store');">
+                        </div>
+                        <div class="absolute bottom-3 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-between items-center">
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Sosi Fashion Store</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-accent text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Zagon Technology Logo -->
+                    <div class="portfolio-card glass-card rounded-xl p-6 flex flex-col items-center justify-center aspect-square text-center group cursor-pointer relative overflow-hidden" onclick="openLightbox('Zagon Technology Logo', 'images/Screenshot 2026-07-08 163208.png', 'logos', 'A cybernetic, sharp, technical emblem engineered for an cutting-edge tech solutions firm.')">
+                        <div class="w-full h-full flex items-center justify-center relative">
+                            <img src="images/Screenshot 2026-07-08 163208.png" 
+                                 alt="Zagon Technology Logo" 
+                                 class="max-w-[85%] max-h-[85%] object-contain portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'logo', 'Zagon', 'Technology Logo');">
+                        </div>
+                        <div class="absolute bottom-3 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-between items-center">
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Zagon Tech Logo</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-accent text-xs"></i>
+                        </div>
+                    </div>
+
+                    <!-- Jo Creations Logo -->
+                    <div class="portfolio-card glass-card rounded-xl p-6 flex flex-col items-center justify-center aspect-square text-center group cursor-pointer relative overflow-hidden" onclick="openLightbox('Jo Creations Logo', 'images/Screenshot 2026-07-08 163227.png', 'logos', 'Personal brand mark blending geometric architecture with creative typography elements.')">
+                        <div class="w-full h-full flex items-center justify-center relative">
+                            <img src="images/Screenshot 2026-07-08 163227.png" 
+                                 alt="Jo Creations Logo" 
+                                 class="max-w-[85%] max-h-[85%] object-contain portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'logo', 'Jo', 'Creations Logo');">
+                        </div>
+                        <div class="absolute bottom-3 left-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex justify-between items-center">
+                            <span class="text-[10px] text-gray-400 uppercase tracking-widest">Jo Creations Logo</span>
+                            <i class="fa-solid fa-arrow-up-right-from-square text-accent text-xs"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- POSTERS & CAMPAIGNS SECTION -->
+            <div class="gallery-section mb-20 reveal" data-category="posters">
+                <div class="flex items-center gap-4 mb-8">
+                    <h3 class="font-display text-2xl font-semibold text-gray-200">Social Media & Campaign Posters</h3>
+                    <div class="h-px bg-white/10 flex-grow"></div>
+                    <span class="text-xs text-accent font-mono">02 / CAMPAIGNS</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                    <!-- Metsni Coffee Shop UI Advertisement Mockup -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer group" onclick="openLightbox('Metsni Coffee Campaign Poster', 'images/Screenshot 2026-07-08 163003.png', 'posters', 'A beautiful landscape advertisement design for Metsni Coffee, featuring strong green palettes, modern visual typography, and clean branding style.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Screenshot 2026-07-08 163003.png"
+                                 alt="Metsni Coffee Shop Campaign" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'campaign', 'METSNI COFFEE', 'Aroma & Brand Campaign');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-display font-bold text-sm text-gray-200">Metsni Coffee Campaign Poster</h4>
+                                <p class="text-[10px] text-gray-500 uppercase mt-0.5 font-mono">Hospitality Brand Poster</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-right-long text-accent group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- Free Graphics Course Poster (Amharic) -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer group" onclick="openLightbox('Free Graphics Course Promo Banner', 'images/5902332298449849666_121.jpg', 'posters', 'A localized high-impact promotional flyer created in Amharic for a graphic design program, leveraging bold red and blue visuals.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/5902332298449849666_121.jpg"
+                                 alt="Free Graphics Course Poster"
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'campaign', 'FREE GRAPHICS', 'Amharic Promo Banner');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-display font-bold text-sm text-gray-200">Free Graphics Amharic Course Flyer</h4>
+                                <p class="text-[10px] text-gray-500 uppercase mt-0.5 font-mono">Educational Promo Poster</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-right-long text-accent group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- ADDED POSTER 1 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer group" onclick="openLightbox('Abyssinia Styles Launch Flyer', 'images/5992521200003304242_121.jpg', 'posters', 'Elegant collection launch poster incorporating clean geometric layout styles and fashion vectors for Abyssinia Styles.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/5992521200003304242_121.jpg"
+                                 alt="Abyssinia Styles Launch Flyer"
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'campaign', 'ABYSSINIA FASHION', 'Summer Collection Launch');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-display font-bold text-sm text-gray-200">Abyssinia Styles Summer Launch Flyer</h4>
+                                <p class="text-[10px] text-gray-500 uppercase mt-0.5 font-mono">Fashion Branding Design</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-right-long text-accent group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- ADDED POSTER 2 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer group" onclick="openLightbox('Zagon Tech Hackathon 2026 Poster', 'images/5992521200003304238_121.jpg', 'posters', 'High-tech hacker design aesthetics, featuring tech patterns, deep dark hues, and cyan glowing vector borders.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/5992521200003304238_121.jpg"
+                                 alt="Zagon Tech Hackathon Poster"
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'campaign', 'ZAGON HACKATHON', 'Future of Technology Promo');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-display font-bold text-sm text-gray-200">Zagon Tech Hackathon 2026 Poster</h4>
+                                <p class="text-[10px] text-gray-500 uppercase mt-0.5 font-mono">Tech Event Campaign Design</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-right-long text-accent group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+
+                    <!-- ADDED POSTER 3 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer group" onclick="openLightbox('Gospel Picture Event Banner', 'images/5992521200003304236_121.jpg', 'posters', 'A beautiful spiritual promotional graphic template utilizing glowing effects, golden hour contrasts, and clear layouts.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/5992521200003304236_121.jpg"
+                                 alt="Gospel Picture Event Banner"
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'campaign', 'GOSPEL EVENT', 'Spiritual Visual Masterpiece');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <div>
+                                <h4 class="font-display font-bold text-sm text-gray-200">Gospel Picture Annual Event Flyer</h4>
+                                <p class="text-[10px] text-gray-500 uppercase mt-0.5 font-mono">Church & Event Poster Design</p>
+                            </div>
+                            <i class="fa-solid fa-arrow-right-long text-accent group-hover:translate-x-1.5 transition-transform"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-Section: Birthday Creative Visuals Showcase -->
+                <div class="mb-6 mt-12 flex items-center gap-3">
+                    <h4 class="font-display text-lg text-gray-400 font-medium">Special Creative Birthday Cards</h4>
+                    <div class="h-px bg-white/5 flex-grow"></div>
+                </div>
+
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
+                    <!-- Birthday Card: Queen Nawilyy -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col group cursor-pointer" onclick="openLightbox('Happy Birthday: Queen Nawilyy', 'images/Screenshot 2026-07-08 162758.png', 'posters', 'Custom customized visual featuring high contrast layout styling, pink hues, and personalized typography.')">
+                        <div class="portfolio-img-container aspect-[3/4] overflow-hidden flex items-center justify-center">
+                            <img src="images/Screenshot 2026-07-08 162758.png"
+                                 alt="Queen Nawilyy Birthday" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'portrait', 'NAWILYY', 'Creative Birthday Visual');">
+                        </div>
+                        <div class="p-3 bg-[#080808] border-t border-white/5 text-center">
+                            <h5 class="font-display text-xs font-bold tracking-wider text-white">Queen Nawilyy</h5>
+                            <p class="text-[9px] text-accent font-medium mt-1 uppercase font-mono">Celebration Layout</p>
+                        </div>
+                    </div>
+
+                    <!-- Birthday Card: King Nahom -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col group cursor-pointer" onclick="openLightbox('Happy Birthday: King Nahom', 'images/Screenshot 2026-07-08 162843.png', 'posters', 'Deep royal gold and black themes custom typography designed for King Nahom celebration banner.')">
+                        <div class="portfolio-img-container aspect-[3/4] overflow-hidden flex items-center justify-center">
+                            <img src="images/Screenshot 2026-07-08 162843.png"
+                                 alt="King Nahom Birthday" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'portrait', 'KING NAHOM', 'Gold Standard Banner');">
+                        </div>
+                        <div class="p-3 bg-[#080808] border-t border-white/5 text-center">
+                            <h5 class="font-display text-xs font-bold tracking-wider text-white">King Nahom</h5>
+                            <p class="text-[9px] text-yellow-500 font-medium mt-1 uppercase font-mono">Celebration Layout</p>
+                        </div>
+                    </div>
+
+                    <!-- Birthday Card: Queen Beza 1 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col group cursor-pointer" onclick="openLightbox('Happy Birthday: Queen Beza', 'images/Screenshot 2026-07-08 162918.png', 'posters', 'An exquisite Indigo-ambient theme card highlighting modern custom portrait typography for Queen Beza.')">
+                        <div class="portfolio-img-container aspect-[3/4] overflow-hidden flex items-center justify-center">
+                            <img src="images/Screenshot 2026-07-08 162918.png"
+                                 alt="Queen Beza Birthday" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'portrait', 'QUEEN BEZA', 'Indigo Aesthetic Portrait');">
+                        </div>
+                        <div class="p-3 bg-[#080808] border-t border-white/5 text-center">
+                            <h5 class="font-display text-xs font-bold tracking-wider text-white">Queen Beza</h5>
+                            <p class="text-[9px] text-indigo-400 font-medium mt-1 uppercase font-mono">Celebration Layout</p>
+                        </div>
+                    </div>
+
+                    <!-- Birthday Card: Queen Beza 2 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col group cursor-pointer" onclick="openLightbox('Happy Birthday: Queen Beza', 'images/5803404658863705530_121.jpg', 'posters', 'An exquisite Indigo-ambient theme card highlighting modern custom portrait typography for Queen Beza.')">
+                        <div class="portfolio-img-container aspect-[3/4] overflow-hidden flex items-center justify-center">
+                            <img src="images/5803404658863705530_121.jpg"
+                                 alt="Queen Beza Birthday" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'portrait', 'QUEEN BEZA', 'Indigo Aesthetic Portrait');">
+                        </div>
+                        <div class="p-3 bg-[#080808] border-t border-white/5 text-center">
+                            <h5 class="font-display text-xs font-bold tracking-wider text-white">Queen Beza</h5>
+                            <p class="text-[9px] text-indigo-400 font-medium mt-1 uppercase font-mono">Celebration Layout</p>
+                        </div>
+                    </div>
+
+                    <!-- Birthday Card: Queen Beza 3 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col group cursor-pointer" onclick="openLightbox('Happy Birthday: Queen Beza', 'images/5803404658863705531_121.jpg', 'posters', 'An exquisite Indigo-ambient theme card highlighting modern custom portrait typography for Queen Beza.')">
+                        <div class="portfolio-img-container aspect-[3/4] overflow-hidden flex items-center justify-center">
+                            <img src="images/5803404658863705531_121.jpg"
+                                 alt="Queen Beza Birthday" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'portrait', 'QUEEN BEZA', 'Indigo Aesthetic Portrait');">
+                        </div>
+                        <div class="p-3 bg-[#080808] border-t border-white/5 text-center">
+                            <h5 class="font-display text-xs font-bold tracking-wider text-white">Queen Beza</h5>
+                            <p class="text-[9px] text-indigo-400 font-medium mt-1 uppercase font-mono">Celebration Layout</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Birthday Card: Queellidu -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden flex flex-col group cursor-pointer" onclick="openLightbox('Happy Birthday: Queellidu', 'images/Screenshot 2026-07-08 162901.png', 'posters', 'A pink candy-neon ambient birthday visual card designed with modern clean font styles and dynamic contrasts.')">
+                        <div class="portfolio-img-container aspect-[3/4] overflow-hidden flex items-center justify-center">
+                            <img src="images/Screenshot 2026-07-08 162901.png"
+                                 alt="Queellidu Birthday" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'portrait', 'QUEELLIDU', 'Neon Candy Layout');">
+                        </div>
+                        <div class="p-3 bg-[#080808] border-t border-white/5 text-center">
+                            <h5 class="font-display text-xs font-bold tracking-wider text-white">Queellidu</h5>
+                            <p class="text-[9px] text-pink-500 font-medium mt-1 uppercase font-mono">Celebration Layout</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- YOUTUBE THUMBNAILS SECTION -->
+            <div class="gallery-section reveal" data-category="thumbnails">
+                <div class="flex items-center gap-4 mb-8">
+                    <h3 class="font-display text-2xl font-semibold text-gray-200">YouTube Thumbnails & Creators Assets</h3>
+                    <div class="h-px bg-white/10 flex-grow"></div>
+                    <span class="text-xs text-accent font-mono">03 / CREATOR UTILITIES</span>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- YOUTUBE Growth Analysis Thumbnail -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('YOUTUBE ምን ይሻላል Video Thumbnail', 'images/Screenshot 2026-07-08 163047.png', 'thumbnails', 'High click-through-rate study thumbnail focusing on clean typography, expression assets, and bright neon contrast.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Screenshot 2026-07-08 163047.png"
+                                 alt="YOUTUBE ምን ይሻላል Growth Study" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', 'YOUTUBE ምን ይሻላል', 'Viral Strategy Analysis');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <h4 class="bold text-sm text-gray-200 truncate font-display">YouTube ምን ይሻላል (Growth Analysis)</h4>
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- Guess Who I Am Thumbnail -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('VS: Guess Who I Am Thumbnail', 'images/Screenshot 2026-07-08 163057.png', 'thumbnails', 'High-engagement versus game style design. Optimized specifically for clear readable text on mobile screens.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Screenshot 2026-07-08 163057.png"
+                                 alt="VS Guess Who I Am" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', 'GUESS WHO I AM', 'VS Challenge Game Screen');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <h4 class="bold text-sm text-gray-200 truncate font-display">VS: Guess Who I Am Game Layout</h4>
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- Slow Rock Beat in FL Studio -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('Slow Rock Beat in FL Studio Tutorial', 'images/Screenshot 2026-07-08 163109.png', 'thumbnails', 'FL Studio workspace visual layout designed with glowing red accents to attract music producers.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Screenshot 2026-07-08 163109.png"
+                                 alt="Slow Rock Beat in FL Studio cover" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', 'FL STUDIO ROCK BEAT', 'Producer Tutorial Layout');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <h4 class="bold text-sm text-gray-200 truncate font-display">Slow Rock Beat Production Cover</h4>
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- IRL stream Thumbnail -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('ያልታሰበ IRL stream Campaign Thumbnail', 'images/Screenshot 2026-07-08 163118.png', 'thumbnails', 'A cinematic real-life stream concept header utilizing glowing text styles and professional focus filters.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Screenshot 2026-07-08 163118.png"
+                                 alt="ያልታሰበ IRL stream cover" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', 'ያልታሰበ IRL STREAM', 'Live Interactive Design');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <h4 class="bold text-sm text-gray-200 truncate font-display">ያልታሰበ IRL Live Stream Cover</h4>
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- Burger King vs McDonalds Thumbnail -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('Burger King vs McDonalds Battle Thumbnail', 'images/Screenshot 2026-07-08 163129.png', 'thumbnails', 'High-contrast food comparison battle asset leveraging red and yellow split contrasts for maximized CTR.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Screenshot 2026-07-08 163129.png"
+                                 alt="Burger King vs McDonalds Battle" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', 'BURGER KING VS MCD', 'Food Battle Contrast');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <h4 class="bold text-sm text-gray-200 truncate font-display">Burger King vs McDonalds Showdown</h4>
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- How To Trade Thumbnail -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('How To Trade Financial Campaign Cover', 'images/Screenshot 2026-07-08 163017.png', 'thumbnails', 'A crypto/stock market trade visual concept incorporating glowing green candles and premium tech overlays.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Screenshot 2026-07-08 163037.png" 
+                                 alt="How To Trade Analysis Cover" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', 'HOW TO TRADE', 'Crypto & Financial Tutorial');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            <h4 class="bold text-sm text-gray-200 truncate font-display">Financial Trading Strategy Cover</h4>
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- ADDED THUMBNAIL 1 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('3D Blender Engine Design Tutorial', 'images/6017168501195344911_119.jpg', 'thumbnails', 'Visually engaging 3D render workflow template focusing on dark viewport highlights and orange flame accents.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/6017168501195344911_119.jpg"
+                                 alt="3D Blender Design Tutorial" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', '3D BLENDER WORKFLOW', 'Geometric Modelling Tutorial');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                            
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- ADDED THUMBNAIL 2 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('Photoshop Speedart: Character Design', 'images/Screenshot 2026-07-08 163017.png', 'thumbnails', 'Speedart style layout with neon fire glows, design brush previews, and a premium high-contrast canvas layout.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Screenshot 2026-07-08 163017.png"
+                                 alt="Photoshop Speedart Design" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', 'PHOTOSHOP SPEEDART', 'Fire Red Character Concept');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                          
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+
+                    <!-- ADDED THUMBNAIL 3 -->
+                    <div class="portfolio-card glass-card rounded-xl overflow-hidden group cursor-pointer" onclick="openLightbox('Amharic Tech Review 2026', 'images/Singer Bereket Tesfaye2.jpg', 'thumbnails', 'Modern consumer device catalog visual crafted for Ethiopian audiences, using vibrant glow lines and bold labels.')">
+                        <div class="portfolio-img-container aspect-video overflow-hidden">
+                            <img src="images/Singer Bereket Tesfaye2.jpg"
+                                 alt="Amharic Tech Review Cover" 
+                                 class="w-full h-full object-cover portfolio-img"
+                                 onerror="this.onerror=null; loadFallbackSvg(this, 'youtube', 'TECH REVIEW 2026', 'Next-Gen Equipment Showcase');">
+                        </div>
+                        <div class="p-4 bg-[#080808] border-t border-white/5 flex justify-between items-center">
+                
+                            <i class="fa-brands fa-youtube text-red-600 text-base"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- CONTACT SECTION -->
+    <section id="contact" class="py-24 relative bg-darker overflow-hidden border-t border-white/5">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-accent/10 rounded-[100%] blur-[100px] pointer-events-none"></div>
+        
+        <div class="max-w-4xl mx-auto px-6 text-center relative z-10 reveal">
+            <span class="text-accent text-xs font-bold tracking-widest uppercase mb-2 block">READY TO COMMENCE?</span>
+            <h2 class="font-display text-5xl md:text-8xl font-bold mb-6 tracking-tighter">LET'S <span class="text-gradient">WORK.</span></h2>
+            <p class="text-gray-400 text-base md:text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed">
+                Connect now to configure high-converting digital assets or craft a tailored commercial branding campaign for your business.
+            </p>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12 max-w-3xl mx-auto">
+                <a href="tel:0977318502" class="flex flex-col items-center p-6 glass-card rounded-2xl hover:border-accent transition-all duration-300">
+                    <div class="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mb-4 text-accent">
+                        <i class="fa-solid fa-phone text-xl"></i>
+                    </div>
+                    <span class="text-[10px] uppercase font-mono tracking-widest text-gray-500 mb-1">Direct Call</span>
+                    <span class="font-display text-base font-semibold tracking-wider">0977 318 502</span>
+                </a>
+                
+                <a href="https://t.me/JO_FIRE_12" target="_blank" class="flex flex-col items-center p-6 glass-card rounded-2xl hover:border-cyan transition-all duration-300">
+                    <div class="w-12 h-12 rounded-full bg-sky-500/10 flex items-center justify-center mb-4 text-sky-400">
+                        <i class="fa-brands fa-telegram text-xl"></i>
+                    </div>
+                    <span class="text-[10px] uppercase font-mono tracking-widest text-gray-500 mb-1">Telegram DM</span>
+                    <span class="font-display text-base font-semibold tracking-wider">@JO_FIRE_12</span>
+                </a>
+
+                <!-- Telegram Group Card -->
+                <a href="https://t.me/Jofire_graphic" target="_blank" class="flex flex-col items-center p-6 glass-card rounded-2xl border border-accent/20 hover:border-accent transition-all duration-300 relative group overflow-hidden">
+                    <div class="absolute inset-0 bg-gradient-to-tr from-accent/5 to-transparent pointer-events-none"></div>
+                    <div class="w-12 h-12 rounded-full bg-accent/20 flex items-center justify-center mb-4 text-accent animate-pulse-slow">
+                        <i class="fa-solid fa-users text-lg"></i>
+                    </div>
+                    <span class="text-[10px] uppercase font-mono tracking-widest text-accent mb-1 font-bold">Community Group</span>
+                    <span class="font-display text-sm font-bold text-white mb-1">@Jofire_graphic</span>
+                    <span class="text-[10px] text-gray-400 text-center font-light leading-snug">For more visit our Telegram group</span>
+                </a>
+            </div>
+
+            <p class="text-[10px] text-gray-500 uppercase tracking-widest mb-2 font-display font-bold">That's all for now</p>
+            <h3 class="font-display text-3xl font-bold text-white mb-12">THANK YOU!</h3>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-darker py-12 border-t border-white/5 text-center relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
+            <div class="font-display font-bold text-lg tracking-widest text-white flex items-center gap-2">
+                <img src="images/5974231240687078374_99.jpg" 
+                     alt="Jo Fire Logo Bottom" 
+                     class="w-8 h-8 rounded-full object-cover border border-accent/40 shadow-[0_0_10px_rgba(230,57,70,0.2)]"
+                     onerror="this.onerror=null; loadFallbackSvg(this, 'avatar', 'JO', 'FIRE');">
+                <span>JO<span class="text-accent font-light">FIRE</span> Designs</span>
+            </div>
+            
+            <p class="text-gray-500 text-xs">© 2026 Jo Fire Portfolio. Designed with high-performance creative precision.</p>
+            
+            <!-- Instagram Link Updated to @jo_fire_12 -->
+            <div class="flex gap-4">
+                <a href="https://instagram.com/jo_fire_12" target="_blank" class="w-9 h-9 rounded-full glass flex items-center justify-center hover:text-accent hover:border-accent hover:scale-110 transition-all duration-300" aria-label="Instagram">
+                    <i class="fa-brands fa-instagram text-sm"></i>
+                </a>
+                <a href="https://t.me/JO_FIRE_12" target="_blank" class="w-9 h-9 rounded-full glass flex items-center justify-center hover:text-accent hover:border-accent hover:scale-110 transition-all duration-300" aria-label="Telegram Direct">
+                    <i class="fa-brands fa-telegram text-sm"></i>
+                </a>
+                <a href="https://t.me/Jofire_graphic" target="_blank" class="w-9 h-9 rounded-full glass flex items-center justify-center hover:text-accent hover:border-accent hover:scale-110 transition-all duration-300" aria-label="Telegram Group">
+                    <i class="fa-solid fa-users text-sm"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE LIGHTBOX SYSTEM -->
+    <div id="lightbox" class="fixed inset-0 z-50 bg-[#020202]/95 backdrop-blur-xl flex items-center justify-center p-4 md:p-8 opacity-0 pointer-events-none transition-all duration-400">
+        <div class="absolute inset-0 cursor-pointer" onclick="closeLightbox()"></div>
+        
+        <div class="glass max-w-5xl w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl relative z-10 flex flex-col md:flex-row max-h-[90vh] md:max-h-[80vh]">
+            
+            <!-- Image Frame Container -->
+            <div class="md:w-3/5 bg-zinc-950 flex items-center justify-center p-6 relative min-h-[300px] md:min-h-0">
+                <div id="lightbox-img-wrapper" class="w-full h-full flex items-center justify-center">
+                    <!-- Loaded dynamically via JS -->
+                </div>
+                <!-- Interactive Badges -->
+                <span id="lightbox-category-badge" class="absolute top-4 left-4 px-3 py-1 bg-accent text-white text-[9px] font-bold uppercase tracking-widest rounded-full font-mono shadow-md">CATEGORY</span>
+            </div>
+            
+            <!-- Description Panel -->
+            <div class="md:w-2/5 p-8 flex flex-col justify-between bg-card border-t md:border-t-0 md:border-l border-white/5">
+                <div>
+                    <div class="flex justify-between items-start mb-6">
+                        <h3 id="lightbox-title" class="font-display text-2xl font-bold tracking-tight text-white leading-snug">Design Concept Title</h3>
+                        <button onclick="closeLightbox()" class="text-gray-400 hover:text-accent transition-colors duration-200 text-lg p-1 ml-4" aria-label="Close dialog">
+                            <i class="fa-solid fa-xmark"></i>
+                        </button>
+                    </div>
+                    
+                    <p id="lightbox-desc" class="text-gray-400 text-sm leading-relaxed mb-6">Design explanation and detailed asset metrics go here.</p>
+                </div>
+                
+                <div>
+                    <div class="mb-6 pt-6 border-t border-white/5">
+                        <h4 class="text-[10px] uppercase tracking-widest text-gray-500 mb-2 font-bold font-mono">Designer Profile</h4>
+                        <div class="flex items-center gap-3">
+                            <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent">
+                                <i class="fa-solid fa-fire text-xs"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-white">JO FIRE Designs</p>
+                                <p class="text-[9px] text-gray-500 font-mono">+251 977 318 502</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex gap-3">
+                        <a href="https://t.me/JO_FIRE_12" target="_blank" class="flex-1 py-3 bg-accent hover:bg-accentHover text-white text-center rounded-xl font-bold text-xs uppercase tracking-widest transition-colors shadow-lg shadow-accent/20 flex items-center justify-center gap-2">
+                            <i class="fa-brands fa-telegram"></i> Order This Style
+                        </a>
+                        <button onclick="copyToClipboard('+251977318502')" class="px-4 bg-white/5 hover:bg-white/10 text-white rounded-xl transition-colors text-xs font-bold border border-white/5 flex items-center justify-center gap-2" title="Copy designer contact">
+                            <i class="fa-solid fa-copy"></i> Copy Call
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATION POPUP PANEL -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 glass-card px-6 py-4 rounded-xl border-l-4 border-accent shadow-xl transform translate-y-12 opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-3">
+        <i class="fa-solid fa-check text-accent text-lg"></i>
+        <p class="text-xs font-semibold tracking-wide text-white" id="toast-text">Action executed successfully!</p>
+    </div>
+
+    <script>
+        // DOM Elements
+        const navbar = document.getElementById('navbar');
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileLinks = document.querySelectorAll('.mobile-link');
+        const reveals = document.querySelectorAll('.reveal');
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImgWrapper = document.getElementById('lightbox-img-wrapper');
+        const lightboxTitle = document.getElementById('lightbox-title');
+        const lightboxDesc = document.getElementById('lightbox-desc');
+        const lightboxCat = document.getElementById('lightbox-category-badge');
+        const toast = document.getElementById('toast');
+        const toastText = document.getElementById('toast-text');
+
+        // Dynamic Fallback SVG Loader to resolve C:/ images beautifully in previews
+        function loadFallbackSvg(imgElement, type, mainTitle, subTitle) {
+            let svgContent = '';
+            
+            if (type === 'avatar') {
+                svgContent = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" class="w-full h-full bg-zinc-950">
+                        <defs>
+                            <radialGradient id="avatarG" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#2c0b0e"/>
+                                <stop offset="100%" stop-color="#050505"/>
+                            </radialGradient>
+                        </defs>
+                        <rect width="200" height="200" fill="url(#avatarG)" />
+                        <!-- Stylized avatar head and shoulders -->
+                        <circle cx="100" cy="80" r="35" fill="none" stroke="#e63946" stroke-width="2.5" />
+                        <circle cx="100" cy="80" r="28" fill="#e63946" opacity="0.15" />
+                        <path d="M50,155 C50,125 72,110 100,110 C128,110 150,125 150,155" fill="none" stroke="#e63946" stroke-width="2.5" />
+                        <path d="M55,150 C55,130 75,115 100,115 C125,115 145,130 145,150" fill="#e63946" opacity="0.15" />
+                        <!-- Decorative details -->
+                        <circle cx="100" cy="80" r="4" fill="#ffffff" />
+                        <path d="M100,30 L100,15" stroke="#e63946" stroke-width="2" stroke-linecap="round" opacity="0.5" />
+                    </svg>
+                `;
+            } else if (type === 'logo') {
+                svgContent = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400" class="w-full h-full max-h-[300px]">
+                        <rect width="400" height="400" fill="#09090b" rx="24"/>
+                        <circle cx="200" cy="180" r="80" fill="none" stroke="#e63946" stroke-width="2" stroke-dasharray="10 5" opacity="0.4"/>
+                        <circle cx="200" cy="180" r="60" fill="none" stroke="#e63946" stroke-width="4"/>
+                        <polygon points="200,140 225,200 175,200" fill="#e63946" opacity="0.8"/>
+                        <text x="200" y="300" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-size="28" font-weight="bold" text-anchor="middle" letter-spacing="4">${mainTitle}</text>
+                        <text x="200" y="330" fill="#e63946" font-family="'Inter', sans-serif" font-size="12" font-weight="600" text-anchor="middle" letter-spacing="6" opacity="0.8">${subTitle.toUpperCase()}</text>
+                    </svg>
+                `;
+            } else if (type === 'campaign') {
+                svgContent = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="g" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#111111"/>
+                                <stop offset="100%" stop-color="#050505"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="800" height="450" fill="url(#g)" rx="16"/>
+                        <rect x="20" y="20" width="760" height="410" fill="none" stroke="#e63946" stroke-width="1" opacity="0.15" rx="8"/>
+                        <!-- Decorative Abstract Grids -->
+                        <line x1="100" y1="0" x2="100" y2="450" stroke="#ffffff" stroke-width="1" opacity="0.03"/>
+                        <line x1="700" y1="0" x2="700" y2="450" stroke="#ffffff" stroke-width="1" opacity="0.03"/>
+                        <line x1="0" y1="225" x2="800" y2="225" stroke="#ffffff" stroke-width="1" opacity="0.03"/>
+                        <!-- Central Artwork Logo -->
+                        <g transform="translate(140, 225)">
+                            <circle cx="0" cy="0" r="60" fill="#e63946" opacity="0.1" />
+                            <polygon points="0,-40 35,20 -35,20" fill="none" stroke="#e63946" stroke-width="3" />
+                            <circle cx="0" cy="0" r="10" fill="#ffffff" />
+                        </g>
+                        <!-- Copywriting Layout -->
+                        <text x="300" y="190" fill="#e63946" font-family="'Space Grotesk', sans-serif" font-size="14" font-weight="700" letter-spacing="6" opacity="0.9">CREATIVE POSTER</text>
+                        <text x="300" y="240" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-size="36" font-weight="bold" letter-spacing="1">${mainTitle}</text>
+                        <text x="300" y="275" fill="#a1a1aa" font-family="'Inter', sans-serif" font-size="14" font-weight="400" letter-spacing="2">${subTitle}</text>
+                        
+                        <rect x="300" y="310" width="160" height="30" fill="none" stroke="#e63946" stroke-width="1.5" rx="15" />
+                        <text x="380" y="329" fill="#e63946" font-family="'Inter', sans-serif" font-size="10" font-weight="bold" text-anchor="middle" letter-spacing="1">VIEW ORIGINAL WORK</text>
+                    </svg>
+                `;
+            } else if (type === 'portrait') {
+                svgContent = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 500" class="w-full h-full">
+                        <defs>
+                            <radialGradient id="rg" cx="50%" cy="50%" r="50%">
+                                <stop offset="0%" stop-color="#1f0709"/>
+                                <stop offset="100%" stop-color="#020202"/>
+                            </radialGradient>
+                        </defs>
+                        <rect width="400" height="500" fill="url(#rg)" rx="20"/>
+                        <circle cx="200" cy="210" r="90" fill="none" stroke="#e63946" stroke-width="1" stroke-dasharray="8 4" opacity="0.3"/>
+                        
+                        <!-- Geometric Crown Icon -->
+                        <g transform="translate(200, 190) scale(1.3)">
+                            <path d="M-30,20 L-20,-15 L0,5 L20,-15 L30,20 Z" fill="none" stroke="#e63946" stroke-width="3" />
+                            <circle cx="-20" cy="-20" r="3" fill="#e63946" />
+                            <circle cx="0" cy="0" r="3" fill="#e63946" />
+                            <circle cx="20" cy="-20" r="3" fill="#e63946" />
+                        </g>
+
+                        <text x="200" y="350" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-size="22" font-weight="bold" text-anchor="middle" letter-spacing="3">${mainTitle}</text>
+                        <text x="200" y="385" fill="#e63946" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="4">${subTitle.toUpperCase()}</text>
+                        <text x="200" y="420" fill="#666666" font-family="'Inter', sans-serif" font-size="10" font-style="italic" text-anchor="middle">"Premium Graphic Visuals engineered by Jo Fire"</text>
+                    </svg>
+                `;
+            } else if (type === 'youtube') {
+                svgContent = `
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 337" class="w-full h-full">
+                        <defs>
+                            <linearGradient id="yG" x1="0%" y1="0%" x2="100%" y2="100%">
+                                <stop offset="0%" stop-color="#0f0f15"/>
+                                <stop offset="100%" stop-color="#020202"/>
+                            </linearGradient>
+                        </defs>
+                        <rect width="600" height="337" fill="url(#yG)" rx="12"/>
+                        <rect x="0" y="0" width="600" height="337" fill="none" stroke="#e63946" stroke-width="3" opacity="0.4" rx="12" />
+                        
+                        <!-- High Click Gradients -->
+                        <circle cx="50" cy="168" r="150" fill="#e63946" opacity="0.15" filter="blur(60px)" />
+                        
+                        <!-- Amharic/English Title -->
+                        <text x="50" y="120" fill="#ffffff" font-family="'Space Grotesk', sans-serif" font-size="34" font-weight="900" letter-spacing="1" width="450">${mainTitle}</text>
+                        <text x="50" y="175" fill="#e63946" font-family="'Inter', sans-serif" font-size="18" font-weight="bold" letter-spacing="3">${subTitle}</text>
+                        
+                        <!-- Badge -->
+                        <rect x="50" y="215" width="160" height="35" fill="#e63946" rx="6" />
+                        <text x="130" y="237" fill="#ffffff" font-family="'Inter', sans-serif" font-size="11" font-weight="bold" text-anchor="middle" letter-spacing="1">4K ULTRA HIGH CTR</text>
+
+                        <!-- Youtube play icon visual -->
+                        <g transform="translate(480, 168)">
+                            <circle cx="0" cy="0" r="50" fill="#000000" stroke="#e63946" stroke-width="2" opacity="0.8"/>
+                            <polygon points="-10,-18 18,0 -10,18" fill="#e63946" />
+                        </g>
+                    </svg>
+                `;
+            }
+
+            // Convert to a safe data URL and re-assign image source
+            const svgBlob = new Blob([svgContent], { type: 'image/svg+xml;charset=utf-8' });
+            const reader = new FileReader();
+            reader.readAsDataURL(svgBlob);
+            reader.onloadend = function() {
+                imgElement.src = reader.result;
+            }
+        }
+
+        // Project category filter engine
+        function filterGallery(category, clickedButton) {
+            // Update filter buttons visual states
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            clickedButton.classList.add('active');
+
+            // Toggle grid items seamlessly
+            const sections = document.querySelectorAll('.gallery-section');
+            sections.forEach(sec => {
+                if (category === 'all') {
+                    sec.style.display = 'block';
+                    setTimeout(() => sec.classList.add('active'), 100);
+                } else if (sec.getAttribute('data-category') === category) {
+                    sec.style.display = 'block';
+                    setTimeout(() => sec.classList.add('active'), 100);
+                } else {
+                    sec.style.display = 'none';
+                }
+            });
+        }
+
+        // Toggle Mobile Menu Flyout
+        mobileMenuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            mobileMenu.classList.toggle('flex');
+            const icon = mobileMenuBtn.querySelector('i');
+            if (mobileMenu.classList.contains('hidden')) {
+                icon.classList.remove('fa-xmark');
+                icon.classList.add('fa-bars');
+            } else {
+                icon.classList.remove('fa-bars');
+                icon.classList.add('fa-xmark');
+            }
+        });
+
+        // Close mobile menu on clicking any navigation link
+        mobileLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                mobileMenu.classList.remove('flex');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-xmark');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+            });
+        });
+
+        // Sticky Navbar handling & Reveal visibility scroll calculations
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('glass', 'shadow-lg');
+                navbar.classList.remove('border-t-0', 'md:border-t', 'md:mt-4');
+                navbar.classList.add('top-0', 'md:mt-0');
+            } else {
+                navbar.classList.remove('glass', 'shadow-lg', 'top-0', 'md:mt-0');
+                navbar.classList.add('md:mt-4', 'border-t-0', 'md:border-t');
+            }
+
+            reveals.forEach(reveal => {
+                const windowHeight = window.innerHeight;
+                const elementTop = reveal.getBoundingClientRect().top;
+                const elementVisible = 80;
+
+                if (elementTop < windowHeight - elementVisible) {
+                    reveal.classList.add('active');
+                }
+            });
+        });
+
+        // Trigger on load
+        window.dispatchEvent(new Event('scroll'));
+
+        // Interactive Lightbox handlers
+        function openLightbox(title, imgUrl, categoryLabel, description) {
+            // Set dynamic metadata
+            lightboxTitle.innerText = title;
+            lightboxDesc.innerText = description;
+            lightboxCat.innerText = categoryLabel.toUpperCase();
+            
+            // Generate structured fallback images instantly in lightbox if load fails
+            let fileCheckName = imgUrl.split('\\').pop().split('/').pop();
+            lightboxImgWrapper.innerHTML = `
+                <img src="${imgUrl}" 
+                     class="max-w-full max-h-[60vh] object-contain rounded-xl shadow-2xl transition-all duration-300"
+                     alt="${title}"
+                     id="lightbox-main-img"
+                     onerror="loadLightboxFallback(this, '${categoryLabel}', '${fileCheckName}')" />
+            `;
+
+            lightbox.classList.remove('pointer-events-none', 'opacity-0');
+            document.body.classList.add('overflow-hidden');
+        }
+
+        function loadLightboxFallback(imgEl, category, filename) {
+            let parsedName = filename.replace(/\.(png|jpg|jpeg|gif|jpg_99)/i, '').replace(/_/g, ' ');
+            let subText = `Asset File: ${filename}`;
+            if (category === 'logos') {
+                loadFallbackSvg(imgEl, 'logo', parsedName, subText);
+            } else if (category === 'posters') {
+                loadFallbackSvg(imgEl, 'campaign', parsedName, subText);
+            } else if (category === 'thumbnails') {
+                loadFallbackSvg(imgEl, 'youtube', parsedName, subText);
+            } else {
+                loadFallbackSvg(imgEl, 'portrait', parsedName, subText);
+            }
+        }
+
+        function closeLightbox() {
+            lightbox.classList.add('pointer-events-none', 'opacity-0');
+            document.body.classList.remove('overflow-hidden');
+        }
+
+        // Custom notification system (replaces alert)
+        function copyToClipboard(text) {
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = text;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            
+            // Launch custom Toast
+            toastText.innerText = "Designer phone number copied: " + text;
+            toast.classList.remove('translate-y-12', 'opacity-0', 'pointer-events-none');
+            setTimeout(() => {
+                toast.classList.add('translate-y-12', 'opacity-0', 'pointer-events-none');
+            }, 3000);
+        }
+    </script>
+
+    <script>
+        // --- THREE.JS BACKGROUND MATRIX SYSTEM ---
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x020202, 0.045);
+
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
+        
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        document.getElementById('canvas-container').appendChild(renderer.domElement);
+
+        // Core central vector geometries
+        const geometry = new THREE.IcosahedronGeometry(12, 1);
+        const material = new THREE.MeshStandardMaterial({ 
+            color: 0xe63946, // Fire-red signature accent lines
+            emissive: 0x3d0a0d, 
+            wireframe: true,
+            transparent: true,
+            opacity: 0.35
+        });
+        
+        const shape = new THREE.Mesh(geometry, material);
+        scene.add(shape);
+
+        // Nested geometric visual core
+        const innerGeometry = new THREE.OctahedronGeometry(6, 0);
+        const innerMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            wireframe: true,
+            transparent: true,
+            opacity: 0.08
+        });
+        const innerShape = new THREE.Mesh(innerGeometry, innerMaterial);
+        scene.add(innerShape);
+
+        // Dynamic floating stellar points
+        const particlesGeometry = new THREE.BufferGeometry();
+        const particlesCount = 750;
+        const posArray = new Float32Array(particlesCount * 3);
+
+        for(let i = 0; i < particlesCount * 3; i++) {
+            posArray[i] = (Math.random() - 0.5) * 90;
+        }
+
+        particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+        const particlesMaterial = new THREE.PointsMaterial({
+            size: 0.12,
+            color: 0xe63946,
+            transparent: true,
+            opacity: 0.5,
+            blending: THREE.AdditiveBlending
+        });
+
+        const particlesMesh = new THREE.Points(particlesGeometry, particlesMaterial);
+        scene.add(particlesMesh);
+
+        // Ambient and directional lighting vectors
+        const pointLight = new THREE.PointLight(0xe63946, 2, 90);
+        pointLight.position.set(10, 10, 10);
+        scene.add(pointLight);
+
+        const pointLight2 = new THREE.PointLight(0xffffff, 1, 90);
+        pointLight2.position.set(-10, -10, 10);
+        scene.add(pointLight2);
+
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+        scene.add(ambientLight);
+
+        camera.position.z = 28;
+
+        // Mouse displacement logic coordinates
+        let mouseX = 0;
+        let mouseY = 0;
+        let targetX = 0;
+        let targetY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        document.addEventListener('mousemove', (event) => {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        });
+
+        // Mobile swipe/drag interaction support
+        document.addEventListener('touchmove', (event) => {
+            if (event.touches.length === 1) {
+                mouseX = (event.touches[0].clientX - windowHalfX) * 1.5;
+                mouseY = (event.touches[0].clientY - windowHalfY) * 1.5;
+            }
+        });
+
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+            const elapsedTime = clock.getElapsedTime();
+
+            targetX = mouseX * 0.0008;
+            targetY = mouseY * 0.0008;
+            
+            shape.rotation.y += 0.04 * (targetX - shape.rotation.y);
+            shape.rotation.x += 0.04 * (targetY - shape.rotation.x);
+            
+            shape.rotation.y += 0.0015;
+            shape.rotation.z += 0.0008;
+
+            innerShape.rotation.y -= 0.002;
+            innerShape.rotation.x -= 0.001;
+            
+            particlesMesh.rotation.y = -0.04 * elapsedTime;
+            particlesMesh.rotation.x = -0.02 * targetY;
+            
+            // Dynamic sinewave flying animation
+            shape.position.y = Math.sin(elapsedTime * 0.4) * 1.2;
+            innerShape.position.y = Math.sin(elapsedTime * 0.4) * 1.2;
+
+            renderer.render(scene, camera);
+        }
+
+        // Dynamic viewport resize calibration
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Initiate render loop on load
+        window.onload = function() {
+            animate();
+        };
+    </script>
+</body>
+</html>
